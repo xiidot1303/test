@@ -41,16 +41,8 @@ class PasswordReset(PasswordChangeDoneView):
 def login(request):
 
     
-    username = request.user.username
-    print(username)
-    password = request.user.password
-    print(password_changed('m3sh13280706django'))
-    user = authenticate(request, username=username, password=password)
-    
-    if user is not None:
-        return login(request)
-    else:
-        return redirect('folder')
+
+    return redirect('folder')
 
 
 @permission_required('hello.add_account')
@@ -61,7 +53,7 @@ def folder(request):
     files = filter(os.path.isfile, os.listdir(search_dir))
     files = [os.path.join(search_dir, f) for f in files] # add path to each file
     files.sort(key=lambda x: os.path.getmtime(x))
-    os.remove(files[0])
+    # os.remove(files[0])
     profiles = Profile.objects.all()
     prefix = []
     for p in profiles:
@@ -554,8 +546,8 @@ def contract(request, ps):
     f = open('files/{}.pdf'.format(ps), 'rb')
     return FileResponse(f)
 
-def audio_create(request, artist):
-    FormSet = modelformset_factory(Audio, fields=('composition', 'artist', 'autor_music', 'autor_text', 'album', 'isrc', 'genre', 'copyright', 'related_rights', 'upc', 'release_date', 'territory', 'link'),
+def audio_create(request, artist, extra):
+    FormSet = modelformset_factory(Audio, extra=extra, fields=('composition', 'artist', 'autor_music', 'autor_text', 'album', 'isrc', 'genre', 'copyright', 'related_rights', 'upc', 'release_date', 'territory', 'link'),
         labels = {
             'composition': '', 
             'artist': '', 
@@ -612,9 +604,14 @@ def audio_create(request, artist):
         return redirect(content, ps=artist, pk=17)
 
     else:
-        formset = FormSet(queryset=Audio.objects.filter(pseudonym=artist))
-        count = len(Audio.objects.filter(pseudonym=artist))
-        context = {'form': formset, 'count': count+1}
+        from django.forms import formset_factory
+        from hello.forms import AudioForm
+        
+        
+        formset = FormSet(queryset=Audio.objects.filter(pseudonym=None))
+
+    
+        context = {'form': formset, 'add': extra+1, 'artist': artist}
         return render(request, 'bot/createaudio.html', context)
 
 

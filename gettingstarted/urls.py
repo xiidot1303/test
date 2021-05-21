@@ -48,8 +48,8 @@ urlpatterns = [
 
     path('content/<str:ps>/<int:pk>', content, name='content'),
     
-    path('add/audio', AudioCreateView.as_view(), name='create_audio'),
-    path('add/video', VideoCreateView.as_view(), name='create_video'),
+    path('add/audio', AudioCreateView.as_view(), name='createaudio'),
+    path('add/video', VideoCreateView.as_view(), name='createvideo'),
     
     path('audio_detail/<int:pk>', AudioDetailView.as_view()),
     path('video_detail/<int:pk>', VideoDetailView.as_view()),
@@ -64,8 +64,8 @@ urlpatterns = [
     path('app_list/<str:artist>', app_list, name='app_list'),
     path('open_app_file/<str:app>', open_app, name='open_app'),
 
-    path('add_audio/<str:artist>', audio_create),
-    path('add_video/<str:artist>', video_create),
+    path('add_audio/<str:artist>/<int:extra>/', audio_create, name='create_audio'),
+    path('add_video/<str:artist>/<int:extra>/', video_create, name='create_video'),
 ]
 LOGIN_REDIRECT_URL = 'bboard:folder'
 

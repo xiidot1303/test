@@ -114,11 +114,10 @@
                 {% for field in form %}
                 
                 <tr>
-                    {% if forloop.counter == count %}
-                    <td>Новый</td>
-                    {% else %}
+                  
+             
                      <td>{{ forloop.counter }}</td>
-                     {% endif %}
+                
                      {% for f in field %}
                      <td class="td">{{ f }}</td>
                      {% endfor %}
@@ -128,7 +127,7 @@
           
                   </table>
      
-
+                  <a href="{% url 'create_audio' artist add %}" style="color: rgb(63, 60, 60);">+ Добавить еще</a>
         
 
     
